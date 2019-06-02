@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link href="css/font.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Mail protection</title>
+</head>
+<body>
+<header  style="position: fixed;top: 0;right: 0;left: 0;background-color: #343a40;color: #fff;">
+<a href = "index.html" style="text-decoration:none;color: #fff"><h1 style="margin: 0.5em 5em ;">Mail protection</h1></a>
+</header>
+<div style="margin:80px 10em" >
+	<div id="eml">Email:<br></div>
+	Link:
+	<div id="link" contenteditable=true>Lorem</div>
+	<br>Html code:<br>
+	<div id="code" contenteditable=true></div><br>
+	Demo:
+	<div id="demo"></div><br>
+	<div id="time"></div></div>
+      <script src="src/md5.js"></script>
+	  <script src="src/ran.js"></script>
+	  <script src="src/xor.js" ></script>
+	  <script src="src/gkey.js" ></script>
+	  <script>
+window.onload=function(){
+var d = new Date();
+var n = d.getTime(); 
+var xor = window.xor;
+var uri = window.location.href
+var uri_dec = decodeURIComponent((window.location.href).split("?")[1]);
+var mail=  uri_dec 
+var lin = uri.split("?")[0].replace("gen","mail")+"?"
+document.getElementById('eml').innerHTML = document.getElementById('eml').innerHTML+mail;
+
+
+var st = makeid()
+var ma = genkey(st)
+var plain_text = mail;  // 待加密的原文
+console.log(plain_text)
+var cipher_key = ma ; // 用来加密的密钥key
+console.log(ma)
+var cipher_text = xor.encrypt(plain_text, cipher_key); //得到密文
+lin = lin+st+"#"+cipher_text
+document.getElementById('link').innerText = lin;
+document.getElementById('code').innerText = '<a href ="'+lin+'" target="_blank" ><img src="'+uri.split("?")[0].replace("gen.html","img/")+'5C1CF9B5.png" alt="Email to me"></a>';
+document.getElementById('demo').innerHTML = document.getElementById('code').innerText
+var d = new Date();
+var n = d.getTime()-n; 
+document.getElementById('time').innerText = "Generated in "+n/1000+" second(s)." 
+}</script>
+</body>
+</html>
